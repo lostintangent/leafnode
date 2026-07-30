@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: #f7f7f6;
+    color: #191919;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  main {
+    display: grid;
+    gap: 1.5rem;
+    margin: 0 auto;
+    max-width: 80rem;
+    padding: 2rem;
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  p,
+  label {
+    color: #6b6b6b;
+  }
+
+  .playground {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.75fr);
+    gap: 1rem;
+    min-height: 36rem;
+  }
+
+  section,
+  label {
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+    padding: 1rem;
+    border: 1px solid #dededb;
+    border-radius: 0.75rem;
+    background: white;
+  }
+
+  label {
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  pre,
+  textarea {
+    margin: 0;
+    color: #191919;
+    font:
+      0.875rem/1.6 ui-monospace,
+      SFMono-Regular,
+      Menlo,
+      monospace;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 0;
+    resize: none;
+    border: 0;
+    outline: 0;
+  }
+
+  @media (max-width: 760px) {
+    main {
+      padding: 1rem;
+    }
+
+    .playground {
+      grid-template-columns: 1fr;
+    }
+  }
+}

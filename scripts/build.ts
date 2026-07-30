@@ -3,6 +3,7 @@ import { join } from "node:path";
 import type { BuildOutput } from "bun";
 import tailwindPlugin from "bun-plugin-tailwind";
 import { peerExternalsPlugin } from "./peer-externals";
+import virtualModulesPlugin from "./virtual-modules";
 
 type BuildMode = "dev" | "playground" | "prod";
 
@@ -25,14 +26,14 @@ const libraryBuild =
         format: "esm",
         splitting: false,
         sourcemap: mode === "dev" ? "external" : "none",
-        plugins: [peerExternalsPlugin],
+        plugins: [virtualModulesPlugin, peerExternalsPlugin],
         ...(mode === "prod" && { minify: true }),
         define,
       });
 
 if (libraryBuild) {
   assertBuildSuccess(libraryBuild, "Library");
-  assertReactIsExternal(libraryBuild);
+  assertPeerBoundary(libraryBuild);
 
   for (const output of libraryBuild.outputs) {
     console.log(`  ${output.path} (${(output.size / 1024).toFixed(1)} KB)`);
@@ -74,7 +75,7 @@ if (mode !== "prod") {
   const playgroundBuild = await Bun.build({
     entrypoints: [join(projectRoot, "playground/index.html")],
     outdir: playgroundDirectory,
-    plugins: [tailwindPlugin],
+    plugins: [virtualModulesPlugin, tailwindPlugin],
     sourcemap: mode === "dev" ? "external" : "none",
     ...(mode === "playground" && { compile: true, minify: true }),
     define,
@@ -95,9 +96,23 @@ function assertBuildSuccess(build: BuildOutput, name: string): void {
   throw new Error(`${name} build failed.`);
 }
 
-async function assertReactIsExternal(build: BuildOutput): Promise<void> {
+async function assertPeerBoundary(build: BuildOutput): Promise<void> {
   const javascript = build.outputs.find((output) => output.path.endsWith("/index.js"));
-  if (!javascript || !(await javascript.text()).includes("react/jsx")) {
-    throw new Error("Library build did not retain its React runtime import.");
+  if (!javascript) throw new Error("Library build did not emit JavaScript.");
+  const source = await javascript.text();
+  const retainedPeers = [
+    "@tanstack/react-store",
+    "@tanstack/store",
+    "react",
+    "react-dom",
+    "react/jsx-runtime",
+  ];
+  for (const peer of retainedPeers) {
+    if (!source.includes(`"${peer}"`)) {
+      throw new Error(`Library build did not retain its ${peer} import.`);
+    }
+  }
+  if (source.includes('"@base-ui/react') || source.includes('"lucide-react"')) {
+    throw new Error("A private implementation dependency escaped the library bundle.");
   }
 }

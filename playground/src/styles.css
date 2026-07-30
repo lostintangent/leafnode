@@ -13,81 +13,222 @@
 
   body {
     margin: 0;
-    background: #f7f7f6;
-    color: #191919;
+    background: #f3f3f1;
     font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
   }
 }
 
 @layer components {
   main {
+    --page-background: white;
+    --page-text: #191919;
+    --page-muted: #6b6b6b;
+    --page-accent: #d4711e;
     display: grid;
     gap: 1.5rem;
-    margin: 0 auto;
-    max-width: 80rem;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
     padding: 2rem;
+    color: var(--page-text);
+    background: var(--page-background);
   }
 
   header {
     display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 90rem;
+    width: 100%;
+    margin: 0 auto;
   }
 
   h1,
+  h2,
   p {
     margin: 0;
   }
 
-  p,
-  label {
-    color: #6b6b6b;
+  h1 {
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    color: var(--page-muted);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .control,
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--page-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  select {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--page-text) 16%, transparent);
+    border-radius: 0.45rem;
+    color: var(--page-text);
+    background: var(--page-background);
   }
 
   .playground {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.75fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
     gap: 1rem;
-    min-height: 36rem;
+    width: 100%;
+    max-width: 90rem;
+    min-height: 40rem;
+    margin: 0 auto;
   }
 
-  section,
-  label {
+  .panel {
     display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
     min-width: 0;
     min-height: 0;
-    padding: 1rem;
-    border: 1px solid #dededb;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--page-text) 15%, transparent);
     border-radius: 0.75rem;
-    background: white;
+    background: var(--page-background);
+    box-shadow: 0 12px 35px rgb(0 0 0 / 0.22);
   }
 
-  label {
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: 0.75rem;
+  .panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--page-text) 12%, transparent);
+    color: var(--page-muted);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  pre,
-  textarea {
+  .panel-heading span:last-child {
+    color: var(--page-accent);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .editor {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .raw-json textarea {
     margin: 0;
-    color: #191919;
+    width: 100%;
+    min-height: 0;
+    padding: 1rem;
+    resize: none;
+    border: 0;
+    outline: 0;
+    color: var(--page-text);
+    background: var(--page-background);
     font:
-      0.875rem/1.6 ui-monospace,
+      0.8125rem/1.65 ui-monospace,
       SFMono-Regular,
       Menlo,
       monospace;
   }
 
-  textarea {
+  .agent-backdrop {
+    position: fixed;
+    z-index: 2147483647;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgb(0 0 0 / 0.45);
+  }
+
+  .agent-dialog {
+    display: grid;
+    gap: 1rem;
+    width: min(30rem, 100%);
+    max-height: calc(100vh - 2rem);
+    padding: 1.25rem;
+    overflow: auto;
+    border-radius: 0.75rem;
+    color: #191919;
+    background: white;
+    box-shadow: 0 24px 70px rgb(0 0 0 / 0.25);
+  }
+
+  .agent-dialog h2 {
+    font-size: 1.1rem;
+  }
+
+  .agent-dialog code,
+  .agent-dialog pre,
+  .agent-dialog textarea {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .agent-dialog textarea {
     width: 100%;
-    min-height: 0;
-    resize: none;
+    padding: 0.75rem;
+    resize: vertical;
+    border: 1px solid #d4d4d4;
+    border-radius: 0.5rem;
+    outline-color: var(--page-accent, #d4711e);
+  }
+
+  .agent-dialog details {
+    min-width: 0;
+    color: #6b6b6b;
+    font-size: 0.75rem;
+  }
+
+  .agent-dialog pre {
+    max-height: 10rem;
+    overflow: auto;
+    white-space: pre-wrap;
+  }
+
+  .agent-dialog footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .agent-dialog button {
+    padding: 0.5rem 0.75rem;
     border: 0;
-    outline: 0;
+    border-radius: 0.45rem;
+    color: white;
+    background: var(--page-accent, #d4711e);
+  }
+
+  .agent-dialog button.secondary {
+    color: #333;
+    background: #ededed;
+  }
+
+  .agent-dialog button:disabled {
+    opacity: 0.45;
   }
 
   @media (max-width: 760px) {
@@ -97,6 +238,11 @@
 
     .playground {
       grid-template-columns: 1fr;
+    }
+
+    header {
+      align-items: flex-start;
+      flex-direction: column;
     }
   }
 }

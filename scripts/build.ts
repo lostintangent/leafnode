@@ -13,6 +13,7 @@ const distDirectory = join(projectRoot, "dist");
 const define = {
   "process.env.NODE_ENV": JSON.stringify("production"),
 };
+const libraryBanner = '"use no memo";';
 
 process.env.NODE_ENV = "production";
 
@@ -26,6 +27,7 @@ const libraryBuild =
         format: "esm",
         splitting: false,
         sourcemap: mode === "dev" ? "external" : "none",
+        banner: libraryBanner,
         plugins: [virtualModulesPlugin, peerExternalsPlugin],
         ...(mode === "prod" && { minify: true }),
         define,
@@ -100,6 +102,9 @@ async function assertPeerBoundary(build: BuildOutput): Promise<void> {
   const javascript = build.outputs.find((output) => output.path.endsWith("/index.js"));
   if (!javascript) throw new Error("Library build did not emit JavaScript.");
   const source = await javascript.text();
+  if (!source.startsWith(libraryBanner)) {
+    throw new Error("Library build did not retain its React Compiler boundary.");
+  }
   const retainedPeers = [
     "@tanstack/react-store",
     "@tanstack/store",

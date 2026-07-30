@@ -9,7 +9,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "paths": {
-      "parsely": ["./src/index.ts"],
+      "@lostintangent/leafnode": ["./src/index.ts"],
       "@/*": ["./src/*"]
     }
   },

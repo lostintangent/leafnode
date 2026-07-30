@@ -1,2 +1,2 @@
 [serve.static]
-plugins = ["./scripts/virtual-modules.ts", "bun-plugin-tailwind"]
+plugins = ["bun-plugin-tailwind"]

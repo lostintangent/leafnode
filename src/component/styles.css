@@ -2,22 +2,35 @@
 @source "./**/*.{ts,tsx}";
 
 @theme inline {
-  --color-accent: var(--accent);
-  --color-background: var(--background);
-  --color-border: var(--border);
-  --color-danger: var(--danger);
-  --color-hover: var(--hover);
-  --color-muted: var(--muted);
-  --color-surface: var(--surface);
-  --color-text: var(--text);
+  --color-accent: var(--leafnode-accent);
+  --color-background: var(--leafnode-background);
+  --color-border: var(--leafnode-border);
+  --color-danger: var(--leafnode-danger);
+  --color-muted: var(--leafnode-muted);
+  --color-surface: var(--leafnode-surface);
+  --color-text: var(--leafnode-text);
 }
 
+/* Fill the containing block by default; the host only needs to establish its size. */
 :host {
+  --leafnode-accent: #d4711e;
+  --leafnode-background: oklch(1 0 0);
+  --leafnode-muted: oklch(0.556 0 0);
+  --leafnode-text: oklch(0.145 0 0);
+
   display: block;
   width: 100%;
   height: 100%;
   min-width: 0;
   min-height: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --leafnode-background: oklch(0.145 0 0);
+    --leafnode-muted: oklch(0.708 0 0);
+    --leafnode-text: oklch(0.985 0 0);
+  }
 }
 
 @layer base {
@@ -39,9 +52,19 @@
   }
 }
 
-.parsely-root,
-.parsely-overlay-scope {
-  color: var(--text);
+.leafnode-root,
+.leafnode-overlay-scope {
+  --leafnode-border: color-mix(in srgb, var(--leafnode-text) 16%, transparent);
+  --leafnode-change-added: color-mix(in srgb, #22c55e 20%, transparent);
+  --leafnode-change-changed: color-mix(in srgb, #3b82f6 20%, transparent);
+  --leafnode-danger: #ef4444;
+  --leafnode-surface: color-mix(in srgb, var(--leafnode-background) 96%, var(--leafnode-text));
+  --leafnode-value-boolean: color-mix(in oklch, #a855f7 78%, var(--leafnode-text));
+  --leafnode-value-null: var(--leafnode-muted);
+  --leafnode-value-number: color-mix(in oklch, #3b82f6 78%, var(--leafnode-text));
+  --leafnode-value-string: color-mix(in oklch, #22c55e 78%, var(--leafnode-text));
+
+  color: var(--leafnode-text);
   font-family:
     ui-sans-serif,
     system-ui,
@@ -51,7 +74,7 @@
     sans-serif;
 }
 
-.parsely-root {
+.leafnode-root {
   position: relative;
   display: grid;
   width: 100%;
@@ -59,5 +82,5 @@
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  background: var(--background);
+  background: var(--leafnode-background);
 }

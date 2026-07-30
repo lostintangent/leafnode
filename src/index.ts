@@ -1,10 +1,7 @@
-export { Parsely } from "./component/Parsely";
-export { darkTheme, lightTheme } from "./component/theme";
-export type {
-  ParselyAgent,
-  ParselyAgentRequest,
-  ParselyProps,
-  ParselyTheme,
-  ParselyThemeInput,
-  ParselyToolbarActions,
-} from "./component/types";
+export { Leafnode, type LeafnodeAgent, type LeafnodeProps } from "./component/Leafnode";
+
+export type { LeafnodeToolbarActions } from "./component/shell/Toolbar";
+
+export { darkTheme, lightTheme, type LeafnodeTheme } from "./component/shell/theme";
+
+export type { LeafnodeAgentRequest } from "./state";

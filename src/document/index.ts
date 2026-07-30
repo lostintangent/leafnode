@@ -1,32 +1,26 @@
 export {
   arrayNode,
   childCount,
+  childPointer,
   createIdFactory,
+  descendantContainerIds,
   findNode,
   objectNode,
+  ROOT_POINTER,
   scalarNode,
-  scalarTypeOf,
   type JsonNode,
   type JsonScalar,
-  type NodeId,
-  type ScalarType,
-} from "./model";
-export { parseDocument, serializeDocument, type ParseResult } from "./codec";
-export { childPointer, ROOT_POINTER } from "./path";
-export { reconcile, type ChangeKind, type DocumentDiff } from "./diff";
-export {
-  declaredId,
-  indexEntities,
-  isIdentityKey,
-  resolveReference,
-  type Entity,
-  type EntityIndex,
-} from "./references";
+} from "./tree";
+
+export { parseDocument, serializeDocument } from "./parser";
+
 export {
   appendItem,
-  insertMember,
+  appendMember,
   removeNode,
   renameMemberKey,
   reorderChildren,
   setValue,
-} from "./operations";
+} from "./edit";
+
+export { reconcile, type DocumentChanges } from "./reconcile";

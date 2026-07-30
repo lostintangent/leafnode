@@ -1,14 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Playground } from "./Playground";
+import { Playground } from "./components/Playground";
 
-const rootElement = document.getElementById("root");
-
-if (!rootElement) {
-  throw new Error("Missing #root element for the playground.");
-}
-
-createRoot(rootElement).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Playground />
   </StrictMode>,
